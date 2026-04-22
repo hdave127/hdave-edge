@@ -9,9 +9,6 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
-    environment:
-      - ACME_EMAIL=${ACME_EMAIL:-info@hdave.net}
-      - FIFTHSEASON_DOMAIN=${FIFTHSEASON_DOMAIN:-}
     networks:
       - web
 
