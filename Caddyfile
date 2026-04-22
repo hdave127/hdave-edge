@@ -1,0 +1,29 @@
+{
+    email {$ACME_EMAIL}
+    acme_ca https://acme.zerossl.com/v2/DV90
+}
+
+# FifthSeason — Domain wird über FIFTHSEASON_DOMAIN env var gesetzt
+# Erwartet, dass die FifthSeason-Services im externen Netz "web" laufen
+# und umbenannt wurden zu: fs-frontend, fs-backend, fs-zitadel
+{$FIFTHSEASON_DOMAIN} {
+    handle /api/* {
+        reverse_proxy fs-backend:5000
+    }
+
+    @zitadel {
+        path /oauth/* /oidc/* /.well-known/* /ui/* /management/* /admin/* /v2/* /debug/* /zitadel.* /caos.*
+    }
+    handle @zitadel {
+        reverse_proxy fs-zitadel:8080
+    }
+
+    handle {
+        reverse_proxy fs-frontend:3000
+    }
+}
+
+# Tourenplanung — statische Nuxt-App (IndexedDB, kein Backend)
+tourenplanung.hdave.net {
+    reverse_proxy tp-web:80
+}
