@@ -9,6 +9,11 @@ fifth-season.de {
         reverse_proxy fs-backend:5000
     }
 
+    # Login v2 (Next.js-Container) — muss vor dem allgemeinen Zitadel-Match stehen.
+    handle /ui/v2/login* {
+        reverse_proxy fs-login:3000
+    }
+
     @zitadel {
         path /oauth/* /oidc/* /.well-known/* /ui/* /management/* /admin/* /v2/* /debug/* /zitadel.* /caos.*
     }
