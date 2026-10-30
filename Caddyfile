@@ -30,3 +30,18 @@ fifth-season.de {
 tourenplanung.hdave.net {
     reverse_proxy tp-web:80
 }
+
+# Pilzlichtung — Spiel-Server (Updates, Feedback, Wunschtafel) + Admin-Seite unter /admin/
+pilzlichtung.hdave.net {
+    encode zstd gzip
+    # Releases (pck + zip) können groß sein
+    request_body {
+        max_size 200MB
+    }
+    reverse_proxy pilzlichtung:8080 {
+        transport http {
+            read_timeout 10m
+            write_timeout 10m
+        }
+    }
+}
